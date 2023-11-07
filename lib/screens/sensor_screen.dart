@@ -20,6 +20,13 @@ class SensorScreen extends StatelessWidget {
         onPressed: (){
           //con getx se usa Get.to
           Get.to(() => const AddSensorScreen());
+          /* controller.getSensorKey('79a22941-c283-4fe3-ad21-00b266652e4d').then((value) => {
+            print(value)
+          },
+          onError: (error) => {
+            print(error)
+          }
+          ); */
         }, 
         child: const Icon(Iconsax.add, color: Colors.white,),
       ),
@@ -43,7 +50,7 @@ class SensorScreen extends StatelessWidget {
                         elevation: 7,
                         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         child: ListTile(
-                          leading: Image.network('https://i.ibb.co/zsTf189/componente-hidroponico.png ', width: 100, height: 100, fit: BoxFit.contain,),
+                          leading: Image.asset('${sensors[index].icon}', width: 100, height: 100, fit: BoxFit.contain,),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

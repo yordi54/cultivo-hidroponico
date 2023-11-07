@@ -24,4 +24,22 @@ class SensorController extends GetxController {
     update();
     return sensors;
   }
+
+  //get key of sensor
+  Future<String> getSensorKey(String id) async {
+    final String sensorKey = await _repository.getSensorKey(id);
+    update();
+    return sensorKey;
+  }
+
+  Future<List<Sensor>> getSensorByGreenHouse(String id) async {
+    final List<Sensor> sensors = await _repository.getAll();
+    final List<Sensor> sensorByGreenHouse = [];
+    for (Sensor sensor in sensors) {
+      if (sensor.greenhouseId == id) {
+        sensorByGreenHouse.add(sensor);
+      }
+    }
+    return sensorByGreenHouse;
+  }
 }

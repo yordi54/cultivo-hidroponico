@@ -247,6 +247,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
                                 icon: selectedSensor.imageUrl,
                                 greenhouseId: selectedGreenhouse.id,
                                 value: 0,
+                                type: selectedSensor.name,
                               );
                               // Guardar el cultivo en la base de datos
                               controller.create(sensor).then((value) => {

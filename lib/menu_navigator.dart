@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import 'screens/dashboard_screen.dart';
+
 class NavigationMenu extends StatelessWidget{
   const NavigationMenu({super.key});
   @override
@@ -36,7 +38,7 @@ class NavigationMenu extends StatelessWidget{
 class NavigationController extends GetxController {
   final Rx<int>  selectedIndex = 0.obs;
   final screens = [
-    Container( color: Colors.green,),
+    const DashboardScreen(),
     const HomeGreenHouseScreen(),
     Container( color: Colors.red,),
     Container( color: Colors.yellow,),

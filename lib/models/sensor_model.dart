@@ -1,13 +1,14 @@
 class Sensor {
-  final String? id;
-  final String? name;
-  final String? description;
-  final String? state;
-  final int? min;
-  final int? max;
-  final int? value;
-  final String? icon;
-  final String? greenhouseId;
+  String? id;
+  String? name;
+  String? description;
+  String? state;
+  int? min;
+  int? max;
+  int? value;
+  String? icon;
+  String? greenhouseId;
+  String? type;
 
   Sensor({
     this.id,
@@ -19,6 +20,7 @@ class Sensor {
     this.value,
     this.icon,
     this.greenhouseId,
+    this.type,
   });
 
   factory Sensor.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class Sensor {
       value: json['value'],
       icon: json['icon'],
       greenhouseId: json['greenhouseId'],
+      type: json['type'],
     );
   }
 
@@ -45,5 +48,11 @@ class Sensor {
     'value': value,
     'icon': icon,
     'greenhouseId': greenhouseId,
+    'type': type,
   };
+
+  //set value 
+  void setValue(int value) {
+    this.value = value;
+  }
 }

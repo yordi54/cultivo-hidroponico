@@ -31,6 +31,27 @@ class SensorRepository {
     
   }
 
+  Future<String> getSensorKey(String id) async {
+    final DataSnapshot snapshot = await _database.child('sensors').get();
+
+    // Itera sobre los hijos del snapshot
+    for (final child in snapshot.children) {
+      // Obtiene los datos del sensor
+      final Map<String, dynamic> data = toMap(child.value);
+
+      // Comprueba si el ID del sensor coincide
+      if (data['id'] == id && (data['type'] == 'Temperatura' || data['type'] == 'Humedad' )) {
+        // Devuelve la clave del sensor
+        return child.key as String;
+      }
+    }
+
+    // Si no se encuentra el sensor, devuelve null
+    return '';
+  }
+
+   
+
 
 
   Map<String, dynamic> toMap<T>(Object? map) {
