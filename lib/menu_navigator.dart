@@ -1,4 +1,5 @@
 import 'package:cultivo_hidroponico/screens/home_greenhouse_screen.dart';
+import 'package:cultivo_hidroponico/screens/reports/reports_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -41,7 +42,7 @@ class NavigationController extends GetxController {
     const DashboardScreen(),
     const HomeGreenHouseScreen(),
     Container( color: Colors.red,),
-    Container( color: Colors.yellow,),
+    const ReportsScreen()
   ];
 
 }

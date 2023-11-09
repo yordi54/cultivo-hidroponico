@@ -248,7 +248,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
                                 greenhouseId: selectedGreenhouse.id,
                                 value: 0,
                                 type: selectedSensor.name,
-                                state: 'Inhabilitado'
+                                state: false
                               );
                               // Guardar el cultivo en la base de datos
                               controller.create(sensor).then((value) => {

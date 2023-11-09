@@ -1,3 +1,5 @@
+import 'package:cultivo_hidroponico/repositories/report_repository.dart';
+import 'package:cultivo_hidroponico/test/seed_reports.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'menu_navigator.dart';
