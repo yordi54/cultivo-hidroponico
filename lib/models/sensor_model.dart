@@ -2,7 +2,7 @@ class Sensor {
   String? id;
   String? name;
   String? description;
-  String? state;
+  bool? state;
   int? min;
   int? max;
   int? value;

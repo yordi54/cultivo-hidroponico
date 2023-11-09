@@ -50,7 +50,10 @@ class SensorRepository {
     return '';
   }
 
-   
+  Future<void> setValueEngine(bool value) async {
+    //generar un id para el sensor
+    await _database.child('sensors/-NimYUWvYUwqm9EZqTRl/state').set(value);
+  }
 
 
 

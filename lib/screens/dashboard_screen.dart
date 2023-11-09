@@ -47,11 +47,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 import 'dart:async';
 
 import 'package:cultivo_hidroponico/controllers/greenhouse_controller.dart';
+import 'package:cultivo_hidroponico/controllers/report_controller.dart';
 import 'package:cultivo_hidroponico/controllers/sensor_controller.dart';
 import 'package:cultivo_hidroponico/models/greenhouse_model.dart';
+import 'package:cultivo_hidroponico/models/greenhouse_report_model.dart';
+import 'package:cultivo_hidroponico/utils/utils.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../models/sensor_model.dart';
 class DashboardScreen extends StatefulWidget {
@@ -69,6 +73,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Sensor> sensors = [];
   final sensorRef = FirebaseDatabase.instance.ref();
   late StreamSubscription<DatabaseEvent> _listen;
+  ReportController _reportController = ReportController();
+
+
   @override
   void initState() {
     super.initState();
@@ -85,11 +92,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
         final data = event.snapshot.value as Map;
         // Comprueba si el valor es un número
         for( int index = 0; index < sensors.length; index++  ){
-          sensorController.getSensorKey(sensors[index].id.toString()).then((value) => {
+          sensorController.getSensorKey(sensors[index].id.toString()).then((value) {
             if(data[value] != null){
               // Actualiza el valor del contador segun id
               //print(data[value]['value']),
-              sensors[index].setValue(data[value]['value'])
+              sensors[index].setValue(data[value]['value']);
+              
+              var now = DateTime.now();
+              var formatter = DateFormat('yyyy-MM-dd');
+              String formattedDate = formatter.format(now);
+              String formattedTime = DateFormat.Hms().format(now);
+
+              final greenHouseReport = {
+                "description": "La ${data[value]['type']} es mayor de lo normal",
+                "greenhouse": "Invernadero21",
+                "date": formattedDate,
+                "hour": formattedTime
+              };
+
+              if(data[value]['value'] > data[value]['max']){ //Verifica si es mayor al max
+                _reportController.create(greenHouseReport);
+              }
             }
 
           });
@@ -239,7 +262,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 //Image.asset('${sensors[index].icon}', width: 100, height: 100, fit: BoxFit.contain,),
                                 Text('${sensors[index].name}'),
                                 const SizedBox(width: 30,),
-                                Switch(value: sensors[index].state == 'true', onChanged: (v){}),
+                                Switch(value: sensors[index].state.toString().parseBool(), onChanged: (value){
+                                  setState(() {
+                                    sensors[index].state = value;
+                                    sensorController.setValueEngine(value);
+                                  });
+                                  print(sensors[index].state);
+                                }),
                               ],
                             ),
                           ),
