@@ -66,7 +66,7 @@ class _AddCropScreenState extends State<AddGreenHouseScreen> {
           fontWeight: FontWeight.bold,
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
       ),
       body: //formulario
       SingleChildScrollView(
@@ -223,7 +223,7 @@ class _AddCropScreenState extends State<AddGreenHouseScreen> {
                                 capacity: int.parse(_capacityController.text),
                                 location: _locationController.text,
                                 cropId: selectedCrop.id,
-                                state: true,
+                                state: 'Inhabilitado',
                                 image: ''
                               );
                               // Agregar el cultivo a la base de datos

@@ -6,12 +6,12 @@ import '../models/greenhouse_model.dart';
 class GreenHouseController extends GetxController {
   final GreenHouseRepository _repository = GreenHouseRepository();
 
-  @override
+  /*@override
   void onReady() {
     super.onReady();
     getAll();
     update();
-  }
+  }*/
 
   // create 
   Future<void> create(GreenHouse greenhouse) async {
@@ -22,14 +22,20 @@ class GreenHouseController extends GetxController {
   // get all
    Future<List<GreenHouse>> getAll() async {
     final List<GreenHouse> greenhouses = await _repository.getAll();
-    update();
+    //update();
     return greenhouses;
   }
 
   //get key of crop
   Future<String> getGreenHouse(String  id) async {
     final String greenHouseName  = await _repository.getGreenHouse(id);
-    update();
+    
     return greenHouseName;
   }
+
+  //set state
+  Future<void> setState(String id, String state) async {
+    await _repository.setState(id, state);
+  } 
+
 }

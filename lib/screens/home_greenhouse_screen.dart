@@ -22,7 +22,7 @@ class HomeGreenHouseScreen extends StatelessWidget {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
         //botom tabBar
         bottom: TabBar(
           indicatorColor: Colors.white,

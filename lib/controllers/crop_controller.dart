@@ -15,14 +15,14 @@ class CropController extends GetxController {
   // get all
    Future<List<Crop>> getAll() async {
     final List<Crop> crops = await _repository.getAll();
-    update();
+    //update();
     return crops;
   }
 
   //get key of crop
   Future<String> getCrop(String  id) async {
     final String cropName  = await _repository.getCrop(id);
-    update();
+    //update();
     return cropName;
   }
 }

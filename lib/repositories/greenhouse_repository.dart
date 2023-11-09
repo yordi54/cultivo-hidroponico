@@ -30,6 +30,13 @@ class GreenHouseRepository {
     //generar un id para el invernadero
     await _database.child('greenhouses').push().set(greenhouse.toJson());
   }
+  //set state
+  Future<void> setState(String id, String state) async {
+    String key = await getKey(id) ;
+    await _database.child('greenhouses/$key').update(
+      {'state': state} 
+    );
+  } 
 
   Map<String, dynamic> toMap<T>(Object? map) {
     return Map<String, dynamic>.from(map as Map);
@@ -47,6 +54,25 @@ class GreenHouseRepository {
       }
     }
 
+    return '';
+  }
+
+  Future<String> getKey(String id) async {
+    final DataSnapshot snapshot = await _database.child('sensors').get();
+
+    // Itera sobre los hijos del snapshot
+    for (final child in snapshot.children) {
+      // Obtiene los datos del sensor
+      final Map<String, dynamic> data = toMap(child.value);
+
+      // Comprueba si el ID del sensor coincide
+      if (data['id'] == id ) {
+        // Devuelve la clave del sensor
+        return child.key as String;
+      }
+    }
+
+    // Si no se encuentra el sensor, devuelve null
     return '';
   }
 

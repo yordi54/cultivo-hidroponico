@@ -30,7 +30,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
     location: '',
     description: '',
     image: '',
-    state: true,
+    state: 'Inhabilitado',
     area: 0,
     capacity: 0,
     cropId: '',
@@ -75,7 +75,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
           fontWeight: FontWeight.bold,
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -248,6 +248,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
                                 greenhouseId: selectedGreenhouse.id,
                                 value: 0,
                                 type: selectedSensor.name,
+                                state: 'Inhabilitado'
                               );
                               // Guardar el cultivo en la base de datos
                               controller.create(sensor).then((value) => {
@@ -261,7 +262,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
                             }
                           }, 
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrangeAccent[200],
+                            backgroundColor: Colors.green,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)
                             )

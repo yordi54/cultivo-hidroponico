@@ -14,7 +14,7 @@ class CropScreen extends StatelessWidget {
     final CropController controller = Get.put(CropController());
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
         onPressed: (){
           //con getx se usa Get.to
           Get.to(const AddCropScreen());
@@ -38,32 +38,26 @@ class CropScreen extends StatelessWidget {
                     itemCount: crops.length,
                     itemBuilder: (context, index) => 
                     Card(
+                      color: Colors.greenAccent[100],
+                      shadowColor: Colors.greenAccent[200],
                       elevation: 7,
                       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: ListTile(
                         leading: Image.asset(crops[index].image.toString(), width: 100, height: 100, fit: BoxFit.contain,),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                        title: 
                             Text('${crops[index].name}', style: const TextStyle(
-                              fontSize: 20,
-                            ),),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Tiempo Cosecha: ${crops[index].harvestTime} Dias '),
+                              fontSize: 20, )),
+                        subtitle: Text('Tiempo Cosecha: ${crops[index].harvestTime} Dias '),
                             
-                          ]
-                        ),
+    
+                        
                       
-                        trailing:  IconButton(
+                        /*trailing:  IconButton(
                           onPressed: (){
                             
                           }, 
                           icon: const Icon(Iconsax.trash, color: Colors.red,),
-                        ),
+                        ),*/
                       ),
                     ),
                   ),

@@ -16,7 +16,7 @@ class GreenHouseScreen extends StatelessWidget {
     final CropController cropController = Get.put(CropController());
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
         onPressed: (){
           Get.to(() => const AddGreenHouseScreen());
         }, 
@@ -39,41 +39,55 @@ class GreenHouseScreen extends StatelessWidget {
                     itemCount: greenhouses.length,
                     itemBuilder: (context, index){
                       return Card(
+                        color: Colors.greenAccent[100],
+                        shadowColor: Colors.greenAccent[200],
                         elevation: 7,
                         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: ListTile(
-                          leading: Image.network('https://i.ibb.co/zsTf189/componente-hidroponico.png ', width: 100, height: 100, fit: BoxFit.contain,),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('${greenhouses[index].name}'),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Capacidad: ${greenhouses[index].capacity} '),
-                              FutureBuilder<String>(
-                                future: cropController.getCrop(greenhouses[index].cropId!), 
-                                builder: ((context, snapshot) {
-                                  if (snapshot.hasData){
-                                    return Text('Cultivo: ${snapshot.data}');
-                                  }else{
-                                    return const Text('Cultivo: ');
-                                  }
-                                })
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 10,),
+                            SizedBox(
+                              width: 70,
+                              height: 100,
+                              child: Image.asset(
+                                'assets/images/icons8-invernadero-48.png',
+                                height: 20,
+                                width: 20,
+                                fit: BoxFit.contain,
                               ),
-                              Text('Estado: ${greenhouses[index].state}'),
-                            ]
-                          ),
-                        
-                          trailing:  IconButton(
-                            onPressed: (){
-                              
-                            }, 
-                            icon: const Icon(Iconsax.trash, color: Colors.red,),
-                          ),
-                        ),
+                            ),
+                            const SizedBox(width: 20,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${greenhouses[index].name}', style: const TextStyle(
+                                  fontSize: 20, )),
+                                Text('Capacidad : ${greenhouses[index].capacity}'),
+                                Text('Area: ${greenhouses[index].area}'),
+                                Text('Estado: ${greenhouses[index].state}'),
+                                FutureBuilder<String>(
+                                  future: cropController.getCrop(greenhouses[index].cropId!), 
+                                  builder: ((context, snapshot) {
+                                    if (snapshot.hasData){
+                                      return Text('Cultivo: ${snapshot.data}');
+                                    }else{
+                                      return const Text('Cultivo: ');
+                                    }
+                                  })
+                                ),
+                                //icon para cambiar state
+                                 
+                              ],
+                            ),
+                            const SizedBox(width: 40,),
+                            IconButton(
+                              onPressed: (){
+                                openDialog(context, greenhouses[index].id!, greenhouses[index].state!, controller );
+                              }, 
+                              icon: const Icon(Iconsax.edit, color: Colors.green,),
+                            ),
+                          ],
+                        )
                       );
                     }
                   ),
@@ -87,5 +101,58 @@ class GreenHouseScreen extends StatelessWidget {
     );
   }
 
+    //show dialog change state function
+    void openDialog(BuildContext context, String id, String state, GreenHouseController controller){
+      final String stateChange =  (state == 'Habilitado') ? 'Inhabilitado': state; 
+      showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            title: const Text('Cambiar Estado'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Text('Estas seguro de cambia a estado $stateChange?'),
+
+                ],
+              ) 
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      )
+                    ),
+                    onPressed: (){
+                      Get.back();
+                    },
+                    child: const Text('Cancelar', style: TextStyle(color: Colors.white),),
+                  ),
+                  const SizedBox(width: 10,),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      )
+                    ),
+                    onPressed: (){
+                      controller.setState(id,state);
+                      Get.back();
+                    }, 
+                    child: const Text('Aceptar', style: TextStyle(color: Colors.white),)
+                  )
+                ],
+              ),
+            ],
+          );
+        }
+      );
+    }
   
 }

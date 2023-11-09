@@ -16,7 +16,7 @@ class SensorScreen extends StatelessWidget {
     final GreenHouseController greenHouseController = Get.put(GreenHouseController());
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
         onPressed: (){
           //con getx se usa Get.to
           Get.to(() => const AddSensorScreen());
@@ -47,40 +47,53 @@ class SensorScreen extends StatelessWidget {
                     itemCount: sensors.length,
                     itemBuilder: (context, index){
                       return Card(
+                        color: Colors.greenAccent[100],
+                        shadowColor: Colors.greenAccent[200],
                         elevation: 7,
                         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: ListTile(
-                          leading: Image.asset('${sensors[index].icon}', width: 100, height: 100, fit: BoxFit.contain,),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('${sensors[index].name}'),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Tipo: Temperatura'),
-                              FutureBuilder<String>(
-                                future: greenHouseController.getGreenHouse(sensors[index].greenhouseId!), 
-                                builder: ((context, snapshot) {
-                                  if (snapshot.hasData){
-                                    return Text('Invernadero: ${snapshot.data}');
-                                  }else{
-                                    return const Text('Invernadero: ');
-                                  }
-                                })
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 10,),
+                            SizedBox(
+                              width: 70,
+                              height: 100,
+                              child: Image.asset(
+                                '${sensors[index].icon}',
+                                color: Colors.white,
+                                height: 20,
+                                width: 20,
+                                fit: BoxFit.contain,
                               ),
-                            ]
-                          ),
-                        
-                          trailing:  IconButton(
-                            onPressed: (){
-                              
-                            }, 
-                            icon: const Icon(Iconsax.trash, color: Colors.red,),
-                          ),
-                        ),
+                            ),
+                            const SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${sensors[index].name}', style: const TextStyle(
+                                  fontSize: 20, )),
+                                Text('Tipo : ${sensors[index].type}'),
+                                Text('Estado: ${sensors[index].state}'),
+                                FutureBuilder<String>(
+                                  future: greenHouseController.getGreenHouse(sensors[index].greenhouseId!), 
+                                  builder: ((context, snapshot) {
+                                    if (snapshot.hasData){
+                                      return Text('Invernadero: ${snapshot.data}');
+                                    }else{
+                                      return const Text('Invernadero: ');
+                                    }
+                                  })
+                                ),
+                                //icon para cambiar state
+                                 
+                              ],
+                            ),
+                            IconButton(
+                              onPressed: (){
+                              }, 
+                              icon: const Icon(Iconsax.edit, color: Colors.green,),
+                            ),
+                          ],
+                        )
                       );
                     }
                   ),

@@ -44,7 +44,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
           fontWeight: FontWeight.bold,
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.deepOrangeAccent[200],
+        backgroundColor: Colors.greenAccent[200],
       ),
       body: 
       //formulario
@@ -180,7 +180,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                             }
                           }, 
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrangeAccent[200],
+                            backgroundColor: Colors.green,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)
                             )

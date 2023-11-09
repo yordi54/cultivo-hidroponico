@@ -5,7 +5,7 @@ class GreenHouse {
   final String? location;
   final String? description;
   final String? image;
-  final bool? state;
+  final String? state;
   final String? id;
   final int? area;
   final int? capacity;
