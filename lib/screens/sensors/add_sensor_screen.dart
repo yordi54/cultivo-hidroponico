@@ -1,41 +1,72 @@
-import 'package:cultivo_hidroponico/constants/list_plants.dart';
-import 'package:cultivo_hidroponico/controllers/crop_controller.dart';
-import 'package:cultivo_hidroponico/models/plant.model.dart';
+
+import 'package:cultivo_hidroponico/constants/list_sensor.dart';
+import 'package:cultivo_hidroponico/controllers/sensor_controller.dart';
+import 'package:cultivo_hidroponico/models/sensor_images_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/crop_model.dart';
+import '../../controllers/greenhouse_controller.dart';
+import '../../models/greenhouse_model.dart';
+import '../../models/sensor_model.dart';
 
-class AddCropScreen extends StatefulWidget {
-  const AddCropScreen({Key? key}) : super(key: key);
+class AddSensorScreen extends StatefulWidget {
+  const AddSensorScreen({super.key});
 
   @override
-  State<AddCropScreen> createState() => _AddCropScreenState();
+  State<AddSensorScreen> createState() => _AddSensorScreenState();
 }
 
-class _AddCropScreenState extends State<AddCropScreen> {
+class _AddSensorScreenState extends State<AddSensorScreen> {
   final uuid = const Uuid();
   final _formKey = GlobalKey<FormState>();
+  SensorImage selectedSensor = SensorImage(imageUrl: '', name: '');
+  final GreenHouseController greenhouseController = Get.put(GreenHouseController());
+  final SensorController controller = Get.put(SensorController());
+  final List<GreenHouse> greenhouses = [];
+  GreenHouse selectedGreenhouse = GreenHouse(
+    id: '',
+    name: '',
+    location: '',
+    description: '',
+    image: '',
+    state: 'Inhabilitado',
+    area: 0,
+    capacity: 0,
+    cropId: '',
+  );
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _harvestTimeController = TextEditingController();
-  Plant selectedPlant = Plant(name: '', imageUrl: '');
-  final CropController controller = Get.put(CropController());
+  final TextEditingController _minValueController = TextEditingController();
+  final TextEditingController _maxValueController = TextEditingController();
+
   
 
   @override
+  void initState() {
+    super.initState();
+    greenhouseController.getAll().then((value) => {
+      setState(() {
+        greenhouses.addAll(value);
+      })
+    },
+    onError: (error) => {
+      Get.snackbar('Error', 'Ocurrió un error al obtener los invernaderos')
+    });
+  }
+
+  @override
   void dispose() {
-    _nameController.dispose();
-    _descriptionController.dispose();
+    greenhouseController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        title: const Text('Añadir Cultivo'),
+        title: const Text('Añadir Sensor'),
         elevation: 3,
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -46,9 +77,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.greenAccent[200],
       ),
-      body: 
-      //formulario
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Padding(
@@ -60,14 +89,14 @@ class _AddCropScreenState extends State<AddCropScreen> {
                   keyboardType: TextInputType.text,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Ingrese un nombre para el cultivo';
+                      return 'Ingrese un nombre para el sensor';
                     }
 
                     return null;
                   },
                   decoration: const InputDecoration(
                     labelText: 'Nombre',
-                    hintText: 'Nombre del cultivo',
+                    hintText: 'Nombre del sensor',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))
                     )
@@ -81,14 +110,14 @@ class _AddCropScreenState extends State<AddCropScreen> {
                   minLines: 1,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Ingrese una descripción para el cultivo';
+                      return 'Ingrese una descripción para el sensor';
                     }
                     return null;
                   },
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                     labelText: 'Descripción',
-                    hintText: 'Descripción del cultivo',
+                    hintText: 'Descripción del sensor',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     )
@@ -97,17 +126,36 @@ class _AddCropScreenState extends State<AddCropScreen> {
                 const SizedBox(height: 30,),
                 // Tiempo de Cultivo en Dias
                 TextFormField(
-                  controller: _harvestTimeController,
+                  controller: _minValueController,
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Ingrese el tiempo de cultivo';
+                      return 'Ingrese el valor minimo del sensor';
                     }
                     return null;
                   },
                   decoration: const InputDecoration(
-                    labelText: 'Tiempo de cultivo',
-                    hintText: 'Tiempo de cultivo en días',
+                    labelText: 'Valor Mínimo',
+                    hintText: 'Valor minimo del sensor',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                    )
+                  ),
+                ),
+                // images dropdown
+                const SizedBox(height: 30,),
+                TextFormField(
+                  controller: _maxValueController,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Ingrese el valor maximo del sensor';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Valor Maximo',
+                    hintText: 'Valor maximo del sensor',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))
                     )
@@ -118,36 +166,65 @@ class _AddCropScreenState extends State<AddCropScreen> {
                 DropdownButtonFormField(
                   validator: (value) {
                     if (value == null) {
-                      return 'Seleccione una planta';
+                      return 'Seleccione un tipo de sensor';
                     }
                     return null;
                   },
                   decoration: const InputDecoration(
-                    labelText: 'Tipo Planta',
+                    labelText: 'Tipo Sensor',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))
                     )
                   ),
-                  items: plants.map((plant){
+                  items: simages.map((simage){
                     return DropdownMenuItem(
-                      value: plant,
+                      value: simage,
                       child: Row(
                         children: [
-                          Image.asset(plant.imageUrl, width: 50, height: 50, fit: BoxFit.contain ,),
+                          Image.asset(simage.imageUrl, width: 50, height: 50, fit: BoxFit.contain,),
                           const SizedBox(width: 10,),
-                          Text(plant.name),
+                          Text(simage.name),
                         ],
                       ),
                     );   
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      selectedPlant = value as Plant;
+                      selectedSensor = value as SensorImage;
                     });
                   },
                 ),
-                
-
+                // invernadero list
+                const SizedBox(height: 30,),
+                DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Seleccione un invernadero';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Invernadero',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))
+                    )
+                  ),
+                  items: greenhouses.map((greenhouse){
+                    return DropdownMenuItem(
+                      value: greenhouse,
+                      child: Row(
+                        children: [
+                          Text(greenhouse.name.toString()),
+                        ],
+                      ),
+                    );   
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedGreenhouse = value as GreenHouse;
+                    });
+                  },
+                ),
                 // save boton
                 const SizedBox(height: 40,),
                 Row(
@@ -161,22 +238,27 @@ class _AddCropScreenState extends State<AddCropScreen> {
                             // Validar el formulario
                             if (_formKey.currentState!.validate()) {
                               // Crear un objeto Crop con la información del formulario
-                              final crop = Crop(
+                              final sensor = Sensor(
                                 id: uuid.v4(),
                                 name: _nameController.text,
                                 description: _descriptionController.text,
-                                image: selectedPlant.imageUrl,
-                                harvestTime: int.parse(_harvestTimeController.text),
+                                min: int.parse(_minValueController.text),
+                                max: int.parse(_maxValueController.text),
+                                icon: selectedSensor.imageUrl,
+                                greenhouseId: selectedGreenhouse.id,
+                                value: 0,
+                                type: selectedSensor.name,
+                                state: false
                               );
                               // Guardar el cultivo en la base de datos
-                              controller.create(crop).then((value) => {
-                                // Navegar a la pantalla anterior
+                              controller.create(sensor).then((value) => {
                                 Get.back()
                               },
-                              onError: (error)  =>{
-                                // Mostrar un mensaje de error
-                                Get.snackbar('Error', 'Ocurrió un error al guardar el cultivo')
-                              });
+                              onError: (error) => {
+                                Get.snackbar('Error', 'Ocurrió un error al guardar el sensor')
+                              }
+                              );
+                              
                             }
                           }, 
                           style: ElevatedButton.styleFrom(

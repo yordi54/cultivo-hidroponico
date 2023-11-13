@@ -1,20 +1,21 @@
+
+import 'package:cultivo_hidroponico/screens/greenhouses/device_driver_screen.dart';
+import 'package:cultivo_hidroponico/screens/greenhouses/device_monitoring_screen.dart';
+import 'package:cultivo_hidroponico/screens/sensors/sensor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'sensors/sensor_screen.dart';
-import 'crops/crop_screen.dart';
-import 'greenhouses/greenhouse_screen.dart';
 
-class HomeGreenHouseScreen extends StatelessWidget {
-  const HomeGreenHouseScreen({Key? key}) : super(key: key);
+class DevicesScreen extends StatelessWidget {
+  const DevicesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(TabBarController());
+    final controller = Get.put(TabBar1Controller());
     return  Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        title: const Text('Invernadero'),
+        title: const Text('Invernadero 1'),
         elevation: 3,
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -41,10 +42,9 @@ class HomeGreenHouseScreen extends StatelessWidget {
       //body tabBar View
       body: TabBarView(
         controller: controller.tabController,
-        children: const[
-          GreenHouseScreen(),
-          SensorScreen(),
-          CropScreen(),
+        children: [
+          const DeviceMonitoringScreen(),
+          DeviceDriverScreen(),
         ],
       ),
     );
@@ -52,17 +52,16 @@ class HomeGreenHouseScreen extends StatelessWidget {
 }
 
 //clase para tabbar con getx
-class TabBarController extends GetxController with GetSingleTickerProviderStateMixin {
+class TabBar1Controller extends GetxController with GetSingleTickerProviderStateMixin {
   late TabController tabController;
   //definir los tabs
   final List<Tab> tabs = const[
-    Tab(text: 'Invernadero'),
-    Tab(text: 'Sensores'),
-    Tab(text: 'Cultivo'),
+    Tab(text: 'Monitoreo'),
+    Tab(text: 'Controladores'),
   ];
   @override
   void onInit() {
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
     super.onInit();
   }
   @override

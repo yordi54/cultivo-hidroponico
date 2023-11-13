@@ -22,8 +22,8 @@ class NavigationMenu extends StatelessWidget{
           backgroundColor: Colors.white,
           indicatorColor: Colors.white.withOpacity(0.1),
           destinations: const[
+            NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
             NavigationDestination(icon: Icon(Iconsax.chart_square), label: 'Dashboard'),
-            NavigationDestination(icon: Icon(Iconsax.home), label: 'Invernadero'),
             NavigationDestination(icon: Icon(Iconsax.calendar_1), label: 'Evento'),
             NavigationDestination(icon: Icon(Iconsax.document), label: 'Reporte'),
           ],
@@ -39,8 +39,8 @@ class NavigationMenu extends StatelessWidget{
 class NavigationController extends GetxController {
   final Rx<int>  selectedIndex = 0.obs;
   final screens = [
-    const DashboardScreen(),
     const HomeGreenHouseScreen(),
+    const DashboardScreen(),
     Container( color: Colors.red,),
     const ReportsScreen()
   ];
