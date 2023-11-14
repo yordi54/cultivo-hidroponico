@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:cultivo_hidroponico/controllers/report_controller.dart';
 import 'package:cultivo_hidroponico/screens/reports/show_item_datagrid.dart';
+import 'package:cultivo_hidroponico/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -90,13 +91,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           });
                           Get.to(() => ShowItemDataGrid(greenHouseReport: greenHouseReport,)); 
                         }else{
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Seleccione un ítem"),
-                              backgroundColor: Colors.green,
-                              elevation: 5.0,
-                            )
-                          );
+                          Constants.snackbar(context, "Seleccione un ítem");
                         }
                       },
                     ),
