@@ -46,7 +46,7 @@ class DevicesScreen extends StatelessWidget {
         controller: controller.tabController,
         children: [
           DeviceMonitoringScreen(greenHouse: greenHouse,),
-          DeviceDriverScreen(),
+          DeviceDriverScreen(greenHouse: greenHouse,),
         ],
       ),
     );

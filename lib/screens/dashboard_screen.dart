@@ -265,7 +265,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 Switch(value: sensors[index].state.toString().parseBool(), onChanged: (value){
                                   setState(() {
                                     sensors[index].state = value;
-                                    sensorController.setValueEngine(value);
+                                    sensorController.setValueEngine("state", value);
                                   });
                                   print(sensors[index].state);
                                 }),
