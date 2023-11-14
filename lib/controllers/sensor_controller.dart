@@ -43,8 +43,8 @@ class SensorController extends GetxController {
     return sensorByGreenHouse;
   }
 
-  Future<void> setValueEngine(bool value) async {
-    await _repository.setValueEngine(value);
+  Future<void> setValueEngine(String key, dynamic value) async {
+    await _repository.setValueEngine(key, value);
   }
 
   Future<void> saveValues(String id, int min, int max) async {

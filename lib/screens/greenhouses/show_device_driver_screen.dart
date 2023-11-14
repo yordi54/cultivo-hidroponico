@@ -1,9 +1,14 @@
 
+import 'package:cultivo_hidroponico/controllers/sensor_controller.dart';
+import 'package:cultivo_hidroponico/models/sensor_model.dart';
+import 'package:cultivo_hidroponico/screens/greenhouses/device_driver_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class ShowDeviceDriverScreen extends StatefulWidget{
-  const ShowDeviceDriverScreen({super.key});
+  Sensor sensor;
+  ShowDeviceDriverScreen({super.key, required this.sensor});
 
   @override
   State<ShowDeviceDriverScreen> createState() => _ShowDeviceDriverScreenState();
@@ -11,48 +16,50 @@ class ShowDeviceDriverScreen extends StatefulWidget{
 
 class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
 
+  final SensorController controller = Get.put(SensorController());
   late StopWatchTimer _stopWatchTimer;
 
-  int _selectedHours = 0;
-  int _selectedMinutes = 0;
-  int _selectedSeconds = 0;
+  // int _selectedHours = 0;
+  // int _selectedMinutes = 0;
+  // int _selectedSeconds = 0;
   bool isTimeUp = false;
 
-  DateTime _selectedTime = DateTime.now();
-
-  int max = 10000;
-  bool state = true;
-  bool low = false;
-  late Map<String, int> mapTime;
+  late int max;
+  late bool state;
+  late SelectedTime  _selectedTime;
+  late SelectedTime _initialTime;
 
   late bool _onSelected;
   late bool _offSelected;
-  int valueTimer = 0;
 
   @override
   void initState() {
     super.initState();
-    //_stopWatchTimer.setPresetTime(mSec: initialTimeInSeconds);
-    //_onSelected = SelectedTime(hour: 0, minute: 0, isSelected: true);
-    //_offSelected = SelectedTime(hour: 0, minute: 0, isSelected: false);
+
     _stopWatchTimer = StopWatchTimer();
+    _startTime();
 
-    mapTime = formatMilliseconds(max);
-    _selectedHours = mapTime["hours"]!;
-    _selectedMinutes = mapTime["minutes"]!;
-    _selectedSeconds = mapTime["seconds"]!;
+  }
 
-    if(!state){
-      _offSelected = true;
-      _onSelected = false;
-    }else{
+  void _startTime() {
+    max = widget.sensor.max!;
+     state = widget.sensor.state!;
+    _initialTime = formatMilliseconds(max);
+    _selectedTime = formatMilliseconds(max);
+    state = !state;
+    if(state){
       _onSelected = true;
       _offSelected = false;
+    }else{
+      _onSelected = false;
+      _offSelected = true;
     }
+    _resetTimer();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
@@ -71,19 +78,19 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
         padding: const EdgeInsets.all(10.0),
         child: ListView(
           children:  [
-            const Text(
-              "Motor de riego",
+            Text(
+              widget.sensor.name.toString(),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold
               ),
             ),
             const SizedBox(height: 10.0,),
             const Divider(height: 5.0,),
-            const Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a sapien metus. Nam maximus sem ex, non fringilla diam luctus nec. Integer libero lorem",
-              style: TextStyle(
+            Text(
+              widget.sensor.description.toString(),
+              style:const TextStyle(
                 fontSize: 16.0
               ),
             ),
@@ -113,16 +120,14 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
                             fontWeight: FontWeight.bold
                           )
                         ),
-                        _selectTime(
-                          setState,
-                          SelectedTime(hour: 0, minute: 0)
-                        ),
+                        _selectTime(),
                         ElevatedButton(
                           onPressed: () {
-                            _stopWatchTimer.setPresetTime(mSec: _calculateTotalSeconds());
-                            _stopWatchTimer.onStartTimer();
-
-                            //Conversión y guardar
+                            _resetTimer();
+                            int millis = convertirTiempoAMilisegundos(
+                              _initialTime.hours, _initialTime.minutes, _initialTime.seconds
+                            );
+                            controller.setValueEngine("max", millis);
                           }, 
                           child: const Text(
                             "Guardar intervalo",
@@ -150,32 +155,16 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
                             var remainingTimeInSeconds = _calculateTotalSeconds() - (value ~/ 1000);
                             final displayTime = _getDisplayTime(remainingTimeInSeconds);
 
-                            if (remainingTimeInSeconds <= 0 && !low) {
-                              _stopWatchTimer.onStopTimer();
-                              low = true;
-                              // _onSelected = !_onSelected;
-                              // _offSelected = !_offSelected;
-                              print("onselected conclu");
+                            if (remainingTimeInSeconds <= 0) {
+                              _resetTimer();
+                              if(_onSelected) { 
+                                print("true");
+                                //controller.setValueEngine("state", true);
+                              } else {
+                                print("false");
+                                //controller.setValueEngine("state", false);
+                              }
                             }
-
-                            if(low){
-                              _selectedHours = mapTime["hours"]!;
-                              _selectedMinutes = mapTime["minutes"]!;
-                              _selectedSeconds = mapTime["seconds"]!;
-                              _stopWatchTimer.setPresetTime(mSec: _calculateTotalSeconds());
-                              _stopWatchTimer.onStartTimer();
-                              _stopWatchTimer.rawTime;
-                            }
-
-                            // if(remainingTimeInSeconds <= 0 && _offSelected){
-
-                            // }
-
-                            // if (remainingTimeInSeconds <=snapshot 0 && _offSelected) {
-                            //   _stopWatchTimer.onStopTimer();
-                            //   _onSelected = false;
-                            //   print("Concluido");
-                            // }
                         
                             return Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -217,6 +206,21 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
     );
   }
 
+  _resetTimer() {
+    _initialTime.hours = _selectedTime.hours;
+    _initialTime.minutes = _selectedTime.minutes;
+    _initialTime.seconds = _selectedTime.seconds;
+
+    _stopWatchTimer.onStopTimer();
+    _stopWatchTimer.onResetTimer();
+    _stopWatchTimer.setPresetTime(mSec: _calculateTotalSeconds());
+    _stopWatchTimer.onStartTimer();
+
+    _onSelected = !_onSelected;
+    _offSelected = !_offSelected;
+    print("Reset!!!");
+  }
+
   _timeCard(String title, { Color background = Colors.white, Color colorLabel = Colors.black }) {
     return Card(
       elevation: 10.0,
@@ -239,7 +243,7 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
     );
   }
 
-  _selectTime(StateSetter setState, SelectedTime selectedTime) {
+  _selectTime() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -249,7 +253,7 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
           GestureDetector(
             onTap: () async {
               Future<TimeOfDay?> pickedTime = showTimePicker(
-                initialTime: TimeOfDay.fromDateTime(_selectedTime),
+                initialTime: TimeOfDay.fromDateTime(DateTime.now()),
                 initialEntryMode: TimePickerEntryMode.input,
                 context: context,
                 builder: (BuildContext context, Widget? child) {
@@ -262,11 +266,9 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
               pickedTime.then((value) => {
                 if(value != null){
                   setState(() {
-                    _selectedHours = value.hour;
-                    _selectedMinutes = value.minute;
-                    _selectedSeconds = 0;
-                    selectedTime.hour = value.hour;
-                    selectedTime.minute = value.minute;
+                    _selectedTime.hours = value.hour;
+                    _selectedTime.minutes = value.minute;
+                    _selectedTime.seconds = 0;
                   })
                 }
               });
@@ -276,7 +278,7 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  "${selectedTime.hour}H: ${selectedTime.minute}M",
+                  "${_selectedTime.hours}H: ${_selectedTime.minutes}M: ${_selectedTime.seconds}S",
                   style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold
@@ -290,24 +292,35 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
     );
   }
 
-    Map<String, int> formatMilliseconds(int milliseconds) {
+  SelectedTime formatMilliseconds(int milliseconds) {
     int seconds = (milliseconds / 1000).floor();
     int minutes = (seconds / 60).floor();
     int hours = (minutes / 60).floor();
 
     int remainingSeconds = seconds % 60;
     int remainingMinutes = minutes % 60;
+    SelectedTime selectedTime = SelectedTime(
+                                    hours: hours,
+                                    minutes: remainingMinutes,
+                                    seconds: remainingSeconds
+                                );
+    return selectedTime;
+  }
 
-    return {
-      "hours": hours,
-      "minutes": remainingMinutes,
-      "seconds": remainingSeconds
-    };
+  int convertirTiempoAMilisegundos(int horas, int minutos, int segundos) {
+    int milisegundosEnHora = 3600000;
+    int milisegundosEnMinuto = 60000;
+    int milisegundosEnSegundo = 1000;
+
+    int totalMilisegundos =
+        horas * milisegundosEnHora + minutos * milisegundosEnMinuto + segundos * milisegundosEnSegundo;
+
+    return totalMilisegundos;
   }
 
 
   int _calculateTotalSeconds() {
-    return (_selectedHours * 3600) + (_selectedMinutes * 60) + _selectedSeconds;
+    return (_initialTime.hours * 3600) + (_initialTime.minutes * 60) + _initialTime.seconds;
   }
 
   String _getDisplayTime(int seconds) {
@@ -322,9 +335,9 @@ class _ShowDeviceDriverScreenState extends State<ShowDeviceDriverScreen> {
 }
 
 class SelectedTime{
-  int hour;
-  int minute;
-  bool isSelected;
+  int hours;
+  int minutes;
+  int seconds;
 
-  SelectedTime({ required this.hour, required this.minute, this.isSelected = false });
+  SelectedTime({ required this.hours, required this.minutes, required this.seconds });
 }
