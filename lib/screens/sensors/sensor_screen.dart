@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../controllers/sensor_controller.dart';
+import '../../controllers/sensor_controller.dart';
 import 'add_sensor_screen.dart';
 
 class SensorScreen extends StatelessWidget {

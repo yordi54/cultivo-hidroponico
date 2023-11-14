@@ -1,10 +1,11 @@
 import 'package:cultivo_hidroponico/controllers/crop_controller.dart';
 import 'package:cultivo_hidroponico/models/greenhouse_model.dart';
+import 'package:cultivo_hidroponico/screens/greenhouses/show_greenhouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../controllers/greenhouse_controller.dart';
+import '../../controllers/greenhouse_controller.dart';
 import 'add_greenhouse_screen.dart';
 
 class GreenHouseScreen extends StatelessWidget {
@@ -75,17 +76,43 @@ class GreenHouseScreen extends StatelessWidget {
                                     }
                                   })
                                 ),
-                                //icon para cambiar state
-                                 
                               ],
                             ),
                             const SizedBox(width: 40,),
-                            IconButton(
-                              onPressed: (){
-                                openDialog(context, greenhouses[index].id!, greenhouses[index].state!, controller );
-                              }, 
-                              icon: const Icon(Iconsax.edit, color: Colors.green,),
-                            ),
+                            Column(
+																children: [
+																Switch(
+																	value: true,
+																	onChanged: (value) {
+																		// setState(() {
+																		//   sensors[index].state = value;
+																		//   sensorController.setValueEngine(value);
+																		// });
+																		print(value);
+																	}
+																),
+																IconButton(
+																	onPressed: (){
+																		openDialog(context, greenhouses[index].id!, greenhouses[index].state!, controller );
+																	}, 
+																	icon: const Icon(
+																		Iconsax.edit, 
+																		color: Colors.green,
+																		size: 40.0,
+																	),
+																),
+																IconButton(
+																	onPressed: (){
+																		Get.to(() => const ShowGreenHouseScreen());
+																	}, 
+																	icon: Icon(
+																		Iconsax.eye, 
+																		color: Colors.blue[400],
+																		size: 40.0,
+																	),
+																),
+															],
+														)
                           ],
                         )
                       );

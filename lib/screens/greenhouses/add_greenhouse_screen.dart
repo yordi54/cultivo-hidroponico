@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/crop_model.dart';
-import '../models/greenhouse_model.dart';
+import '../../models/crop_model.dart';
+import '../../models/greenhouse_model.dart';
 
 class AddGreenHouseScreen extends StatefulWidget {
   const AddGreenHouseScreen({Key? key}) : super(key: key);
