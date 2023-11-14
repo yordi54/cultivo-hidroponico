@@ -9,6 +9,7 @@ class Sensor {
   String? icon;
   String? greenhouseId;
   String? type;
+  String? category;
 
   Sensor({
     this.id,
@@ -21,6 +22,7 @@ class Sensor {
     this.icon,
     this.greenhouseId,
     this.type,
+    this.category,
   });
 
   factory Sensor.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class Sensor {
       icon: json['icon'],
       greenhouseId: json['greenhouseId'],
       type: json['type'],
+      category: json['category'],
     );
   }
 
@@ -49,6 +52,7 @@ class Sensor {
     'icon': icon,
     'greenhouseId': greenhouseId,
     'type': type,
+    'category': category,
   };
 
   //set value 

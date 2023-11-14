@@ -86,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
 
     //sensors
-    _listen = sensorRef.child('/sensors').onValue.listen((event) {
+    /*_listen = sensorRef.child('/sensors').onValue.listen((event) {
       setState(() {
         // Obtiene el valor del contador
         final data = event.snapshot.value as Map;
@@ -122,13 +122,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       
       
       });
-     });
+     });*/
   }
 
   @override
   void dispose() {
     super.dispose();
-    _listen.cancel();
+    //_listen.cancel();
 
   }
 
@@ -192,7 +192,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   setState(() {
                     selectedGreenhouse = value as GreenHouse;
                   });
-                  sensorController.getSensorByGreenHouse(selectedGreenhouse.id.toString()).then((value) {
+                  sensorController.getSensorByGreenHouse(selectedGreenhouse.id.toString(), 'Sensors').then((value) {
                     setState(() {
                       sensors = value;
                     });

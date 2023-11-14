@@ -53,7 +53,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
             child: _buildExportingButtons(),
           ),
           const SizedBox(
@@ -219,13 +219,16 @@ class _ReportsScreenState extends State<ReportsScreen> {
       document.dispose();
     }
 
-    return Row(
-      children: <Widget>[
-        _buildExportingButton('Excel', 'images/ExcelExport.png', Colors.amber,
-            onPressed: exportDataGridToExcel),
-        _buildExportingButton('PDF', 'images/PdfExport.png', Colors.deepOrange,
-            onPressed: exportDataGridToPdf)
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: <Widget>[
+          _buildExportingButton('Excel', 'images/ExcelExport.png', Colors.amber,
+              onPressed: exportDataGridToExcel),
+          _buildExportingButton('PDF', 'images/PdfExport.png', Colors.deepOrange,
+              onPressed: exportDataGridToPdf)
+        ],
+      ),
     );
   }
 

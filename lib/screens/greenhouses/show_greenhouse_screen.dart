@@ -1,24 +1,48 @@
 
 
+import 'package:cultivo_hidroponico/controllers/crop_controller.dart';
+import 'package:cultivo_hidroponico/models/crop_model.dart';
+import 'package:cultivo_hidroponico/screens/crops/show_crop_screen.dart';
 import 'package:cultivo_hidroponico/screens/greenhouses/devices_screen.dart';
 import 'package:cultivo_hidroponico/widgets/ritch_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ShowGreenHouseScreen extends StatefulWidget{
-  const ShowGreenHouseScreen({super.key});
+import '../../models/greenhouse_model.dart';
 
+class ShowGreenHouseScreen extends StatefulWidget{
+  const ShowGreenHouseScreen({super.key,required this.greenHouse,});
+  final GreenHouse greenHouse;
   @override
   State<ShowGreenHouseScreen> createState() => _ShowGreenHouseScreenState();
 }
 
 class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
+  CropController cropController = Get.put(CropController());
+  Crop crop = Crop(
+    name: '',
+    description: '',
+    image: '',
+    harvestTime: 0,
+    id: '',
+  ); 
+  @override
+  void initState() {
+    super.initState();
+    //final controller = Get.put(TabBar1Controller());
+    cropController.getCropById(widget.greenHouse.cropId!).then((value) {
+      setState(() {
+        crop = value;
+      });
+    
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        title: const Text('Invernadero 1'),
+        title: Text('Invernadero ${widget.greenHouse.name}'),
         elevation: 3,
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -42,10 +66,10 @@ class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
               ),
             ),
             const SizedBox(height: 20),          
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Detalles: ',
                   style: TextStyle(
                     fontSize: 30, 
@@ -54,27 +78,27 @@ class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
                 ),
                 Card(
                   elevation: 5.0,
-                  color: Color.fromRGBO(105, 240, 174, 1),
+                  color: const Color.fromRGBO(105, 240, 174, 1),
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
                         RichTextItem(
                           icons: Icons.insert_drive_file_outlined,
                           label: "Capacidad",
-                          value: "200"
+                          value: "${widget.greenHouse.capacity}"
                         ),
-                        Divider( height: 5.0,),
+                        const Divider( height: 5.0,),
                         RichTextItem(
                           icons: Icons.insert_drive_file_outlined,
                           label: "Área",
-                          value: "15"
+                          value: "${widget.greenHouse.area} m2"
                         ),
-                        Divider( height: 5.0,),
+                        const Divider( height: 5.0,),
                         RichTextItem(
                           icons: Icons.insert_drive_file_outlined,
                           label: "Estado",
-                          value: "Activo"
+                          value: widget.greenHouse.state!
                         ),
                       ],
                     ),
@@ -98,24 +122,24 @@ class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
                   child: Row(
                     children: [
                       NavigationChip(
-                        label: 'Chip1',
+                        label: crop.name!,
                         onTap: () {
-                          print("chip 1");
+                          Get.to(ShowCropScreen(crop: crop,));
                         }
                       ),
-                      NavigationChip(
+                      /*NavigationChip(
                         label: 'Chip1',
                         onTap: () {
                           print("chip 2");
                         }
-                      ),
+                      ),*/
                       // Agrega más chips según sea necesario
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -133,10 +157,10 @@ class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
                       NavigationChip(
                         label: 'Dispositivos',
                         onTap: () {
-                          Get.to(() => const DevicesScreen());
+                          Get.to(() => DevicesScreen(greenHouse: widget.greenHouse,));
                         },
                       ),
-                      NavigationChip(
+                      /*NavigationChip(
                         label: 'Reportes',
                         onTap: () {
                           print("Ir a reportes");
@@ -147,7 +171,7 @@ class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
                         onTap: () {
                           print("Ir a eventos");
                         },
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

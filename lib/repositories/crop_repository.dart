@@ -49,4 +49,18 @@ class CropRepository {
   Map<String, dynamic> toMap<T>(Object? map) {
     return Map<String, dynamic>.from(map as Map);
   }
+
+  Future<Crop> getCropById(String id) async{
+    final DataSnapshot snapshot = await _database.child('crops').get();
+
+    for (DataSnapshot child in snapshot.children) {
+      final Map<String, dynamic> data = toMap(child.value);
+      final Crop crop = Crop.fromJson(data);
+
+      if (crop.id == id) {
+        return crop;
+      }
+    }
+    return Crop(id: '', name: '', description: '', image: '');
+  }
 }

@@ -223,7 +223,7 @@ class _AddCropScreenState extends State<AddGreenHouseScreen> {
                                 capacity: int.parse(_capacityController.text),
                                 location: _locationController.text,
                                 cropId: selectedCrop.id,
-                                state: 'Inhabilitado',
+                                state: "Inhabilitado",
                                 image: ''
                               );
                               // Agregar el cultivo a la base de datos

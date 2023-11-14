@@ -25,4 +25,9 @@ class CropController extends GetxController {
     //update();
     return cropName;
   }
+  Future<Crop> getCropById(String id) async {
+    final Crop crop = await _repository.getCropById(id);
+    return crop;
+  }
+  
 }

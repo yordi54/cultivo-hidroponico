@@ -31,7 +31,7 @@ class GreenHouseRepository {
     await _database.child('greenhouses').push().set(greenhouse.toJson());
   }
   //set state
-  Future<void> setState(String id, String state) async {
+  Future<void> setState(String id, bool state) async {
     String key = await getKey(id) ;
     await _database.child('greenhouses/$key').update(
       {'state': state} 

@@ -1,4 +1,5 @@
 
+import 'package:cultivo_hidroponico/models/greenhouse_model.dart';
 import 'package:cultivo_hidroponico/screens/greenhouses/device_driver_screen.dart';
 import 'package:cultivo_hidroponico/screens/greenhouses/device_monitoring_screen.dart';
 import 'package:cultivo_hidroponico/screens/sensors/sensor_screen.dart';
@@ -7,7 +8,8 @@ import 'package:get/get.dart';
 
 
 class DevicesScreen extends StatelessWidget {
-  const DevicesScreen({Key? key}) : super(key: key);
+  const DevicesScreen({super.key, required this.greenHouse});
+  final GreenHouse greenHouse;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class DevicesScreen extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        title: const Text('Invernadero 1'),
+        title: Text('Invernadero ${greenHouse.name}'),
         elevation: 3,
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -43,7 +45,7 @@ class DevicesScreen extends StatelessWidget {
       body: TabBarView(
         controller: controller.tabController,
         children: [
-          const DeviceMonitoringScreen(),
+          DeviceMonitoringScreen(greenHouse: greenHouse,),
           DeviceDriverScreen(),
         ],
       ),

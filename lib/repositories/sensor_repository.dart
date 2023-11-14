@@ -55,7 +55,13 @@ class SensorRepository {
     await _database.child('sensors/-NimYUWvYUwqm9EZqTRl/state').set(value);
   }
 
-
+  //setvalues
+  Future<void> saveValues(String id, int min, int max) async {
+    String key = await getSensorKey(id) ;
+    await _database.child('sensors/$key').update(
+      {'min': min, 'max': max} 
+    );
+  }
 
   Map<String, dynamic> toMap<T>(Object? map) {
     return Map<String, dynamic>.from(map as Map);

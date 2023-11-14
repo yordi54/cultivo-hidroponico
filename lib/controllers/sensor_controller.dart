@@ -32,11 +32,11 @@ class SensorController extends GetxController {
     return sensorKey;
   }
 
-  Future<List<Sensor>> getSensorByGreenHouse(String id) async {
+  Future<List<Sensor>> getSensorByGreenHouse(String id, String category) async {
     final List<Sensor> sensors = await _repository.getAll();
     final List<Sensor> sensorByGreenHouse = [];
     for (Sensor sensor in sensors) {
-      if (sensor.greenhouseId == id) {
+      if (sensor.greenhouseId == id && sensor.category == category ) {
         sensorByGreenHouse.add(sensor);
       }
     }
@@ -45,5 +45,9 @@ class SensorController extends GetxController {
 
   Future<void> setValueEngine(bool value) async {
     await _repository.setValueEngine(value);
+  }
+
+  Future<void> saveValues(String id, int min, int max) async {
+    await _repository.saveValues(id, min, max);
   }
 }

@@ -70,9 +70,10 @@ class GreenHouseScreen extends StatelessWidget {
                                   future: cropController.getCrop(greenhouses[index].cropId!), 
                                   builder: ((context, snapshot) {
                                     if (snapshot.hasData){
+                                      print(snapshot);
                                       return Text('Cultivo: ${snapshot.data}');
                                     }else{
-                                      return const Text('Cultivo: ');
+                                      return const Text('Cultivo: Error ');
                                     }
                                   })
                                 ),
@@ -93,7 +94,7 @@ class GreenHouseScreen extends StatelessWidget {
 																),
 																IconButton(
 																	onPressed: (){
-																		openDialog(context, greenhouses[index].id!, greenhouses[index].state!, controller );
+																		//openDialog(context, greenhouses[index].id!, greenhouses[index].state!, controller );
 																	}, 
 																	icon: const Icon(
 																		Iconsax.edit, 
@@ -103,7 +104,7 @@ class GreenHouseScreen extends StatelessWidget {
 																),
 																IconButton(
 																	onPressed: (){
-																		Get.to(() => const ShowGreenHouseScreen());
+																		Get.to(() => ShowGreenHouseScreen(greenHouse: greenhouses[index]));
 																	}, 
 																	icon: Icon(
 																		Iconsax.eye, 
@@ -129,8 +130,8 @@ class GreenHouseScreen extends StatelessWidget {
   }
 
     //show dialog change state function
-    void openDialog(BuildContext context, String id, String state, GreenHouseController controller){
-      final String stateChange =  (state == 'Habilitado') ? 'Inhabilitado': state; 
+    void openDialog(BuildContext context, String id, bool state, GreenHouseController controller){
+      final String stateChange =  state ? 'Inhabilitado': 'Habilitado'; 
       showDialog(
         context: context,
         builder: (BuildContext context){

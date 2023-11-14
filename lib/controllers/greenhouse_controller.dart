@@ -34,7 +34,7 @@ class GreenHouseController extends GetxController {
   }
 
   //set state
-  Future<void> setState(String id, String state) async {
+  Future<void> setState(String id, bool state) async {
     await _repository.setState(id, state);
   } 
 

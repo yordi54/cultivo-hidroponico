@@ -30,7 +30,7 @@ class _AddSensorScreenState extends State<AddSensorScreen> {
     location: '',
     description: '',
     image: '',
-    state: 'Inhabilitado',
+    state: "Inhabilitado",
     area: 0,
     capacity: 0,
     cropId: '',
