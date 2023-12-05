@@ -2,7 +2,7 @@
 import 'package:cultivo_hidroponico/models/greenhouse_model.dart';
 import 'package:cultivo_hidroponico/screens/greenhouses/device_driver_screen.dart';
 import 'package:cultivo_hidroponico/screens/greenhouses/device_monitoring_screen.dart';
-import 'package:cultivo_hidroponico/screens/sensors/sensor_screen.dart';
+//import 'package:cultivo_hidroponico/screens/sensors/sensor_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

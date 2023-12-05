@@ -49,6 +49,10 @@ dependencies:
   path_provider: ^2.1.1
   open_file: ^3.2.1
   stop_watch_timer: ^3.0.2
+  firebase_messaging: ^14.7.6
+  flutter_local_notifications: ^16.2.0
+  d_chart: ^2.6.3
+
 
 dev_dependencies:
   flutter_test:

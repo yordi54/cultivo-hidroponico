@@ -1,7 +1,7 @@
 
 import 'package:cultivo_hidroponico/controllers/sensor_controller.dart';
 import 'package:cultivo_hidroponico/models/sensor_model.dart';
-import 'package:cultivo_hidroponico/screens/greenhouses/device_driver_screen.dart';
+//import 'package:cultivo_hidroponico/screens/greenhouses/device_driver_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
