@@ -1,4 +1,7 @@
+import 'package:cultivo_hidroponico/screens/about_screen.dart';
 import 'package:cultivo_hidroponico/screens/home_greenhouse_screen.dart';
+import 'package:cultivo_hidroponico/screens/privacy_terms_screen.dart';
+import 'package:cultivo_hidroponico/screens/queries/plant_health_screen.dart';
 import 'package:cultivo_hidroponico/screens/reports/reports_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,8 +27,9 @@ class NavigationMenu extends StatelessWidget{
           destinations: const[
             NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
             NavigationDestination(icon: Icon(Iconsax.chart_square), label: 'Dashboard'),
-            NavigationDestination(icon: Icon(Iconsax.calendar_1), label: 'Evento'),
             NavigationDestination(icon: Icon(Iconsax.document), label: 'Reporte'),
+            NavigationDestination(icon: Icon(Iconsax.health), label: 'Mis plantas'),
+            NavigationDestination(icon: Icon(Iconsax.information), label: 'About'),
           ],
         ),
       ),
@@ -41,8 +45,9 @@ class NavigationController extends GetxController {
   final screens = [
     const HomeGreenHouseScreen(),
     const DashboardScreen(),
-    Container( color: Colors.red,),
-    const ReportsScreen()
+    const ReportsScreen(),
+    const PlantHealthScreen(),
+    const AboutScreen()
   ];
 
 }

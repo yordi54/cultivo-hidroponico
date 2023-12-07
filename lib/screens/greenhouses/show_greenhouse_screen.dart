@@ -4,6 +4,7 @@ import 'package:cultivo_hidroponico/controllers/crop_controller.dart';
 import 'package:cultivo_hidroponico/models/crop_model.dart';
 import 'package:cultivo_hidroponico/screens/crops/show_crop_screen.dart';
 import 'package:cultivo_hidroponico/screens/greenhouses/devices_screen.dart';
+import 'package:cultivo_hidroponico/widgets/navigation_chip.dart';
 import 'package:cultivo_hidroponico/widgets/ritch_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -180,34 +181,6 @@ class _ShowGreenHouseScreenState extends State<ShowGreenHouseScreen> {
           ],
         ),
       )
-    );
-  }
-}
-
-class NavigationChip extends StatelessWidget {
-  final String label;
-  final Function()? onTap;
-  const NavigationChip({Key? key, required this.label, this.onTap}): super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        margin: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 20.0,
-            color: Colors.white
-          )
-        ),
-      ),
     );
   }
 }
