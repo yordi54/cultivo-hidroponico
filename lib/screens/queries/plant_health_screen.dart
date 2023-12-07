@@ -195,8 +195,12 @@ class _PlantHealthScreenState extends State<PlantHealthScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: plantIdAnalized.result.disease.suggestions.length,
                     itemBuilder: (context, index) {
-                      return NavigationChip(
-                        label: plantIdAnalized.result.disease.suggestions[index].name,
+                      String percentage = (plantIdAnalized.result.disease.suggestions[index].probability * 100).toStringAsFixed(2);
+                      return Card(
+                        elevation: 5.0,
+                        child: NavigationChip(
+                          label: "Sugerencia: ${plantIdAnalized.result.disease.suggestions[index].name} |  Probabilidad: $percentage%",
+                        )
                       );
                     }
                   )

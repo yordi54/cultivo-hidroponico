@@ -39,31 +39,37 @@ class _PrivacyTermsScreenState extends State<PrivacyTermsScreen> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   return Card(
+                    elevation: 5.0,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          index == 0 ?
+                          _checkTitle("Política de privacidad") :
+                          _checkTitle("Terminos y condiciones"),
                           for (var item in snapshot.data![index])
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['name'],
-                                  style: const TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.bold
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['name'],
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  item['description'],
-                                  textAlign: TextAlign.justify,
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
+                                  Text(
+                                    item['description'],
+                                    textAlign: TextAlign.justify,
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                    ),
                                   ),
-                                ),
-                                const Divider(),
-                              ],
+                                ],
+                              ),
                             ),
                         ],
                       ),
@@ -77,34 +83,23 @@ class _PrivacyTermsScreenState extends State<PrivacyTermsScreen> {
     );
   }
 
-  _infoColumn(List content) {
-    return Column(
-      children: [
-        const Text("Privacidad y Política"),
-        ListView.builder(
-          shrinkWrap: true, 
-          itemCount: content[0]["privacy_policy"].lenght,
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Text(content[index]["title"],
-                  textAlign: TextAlign.justify,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0
-                  ),
-                ),
-                Text(content[index]["description"],
-                  textAlign: TextAlign.justify,
-                  style: const TextStyle(
-                    fontSize: 16.0
-                  ),
-                )
-              ],
-            );
-          }
-        ),
-      ],
+  _checkTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold
+              )
+            ),
+          ),
+          const Divider(height: 8.0,)
+        ],
+      ),
     );
   }
 }
