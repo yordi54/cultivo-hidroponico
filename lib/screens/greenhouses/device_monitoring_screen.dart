@@ -50,7 +50,7 @@ class _DeviceMonitoringScreenState extends State<DeviceMonitoringScreen> {
               
 
               //reporte
-              var now = DateTime.now();
+              /*var now = DateTime.now();
               var formatter = DateFormat('yyyy-MM-dd');
               String formattedDate = formatter.format(now);
               String formattedTime = DateFormat.Hms().format(now);
@@ -64,7 +64,7 @@ class _DeviceMonitoringScreenState extends State<DeviceMonitoringScreen> {
 
               if(data[value]['value'] > data[value]['max']){ //Verifica si es mayor al max
                 reportController.create(greenHouseReport);
-              }
+              }*/
              
             }
           });
