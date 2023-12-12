@@ -25,6 +25,7 @@ class LocalNotification {
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
+      icon: '@mipmap/ic_launcher',
     );
     const platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,

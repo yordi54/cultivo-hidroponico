@@ -22,7 +22,7 @@ void main() async{
   await initializeDateFormatting('es_ES', null);
   //traer token fcm device
   final token = await FirebaseMessaging.instance.getToken();
-  
+  print('Token: $token');
   runApp(const MyApp());
 }
 
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
       //model report
       final  report = {
         'description': message.data['description']!,
-        'greenhouse': 'Invernadero 0',
+        'greenhouse': 'Invernadero 1',
         'date': message.data['date']!,
         'hour': message.data['hour']!,
       };
