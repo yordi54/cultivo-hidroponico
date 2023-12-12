@@ -1,5 +1,8 @@
 //import 'package:cultivo_hidroponico/repositories/report_repository.dart';
 //import 'package:cultivo_hidroponico/test/seed_reports.dart';
+import 'package:cultivo_hidroponico/db/db_termsacceptence.dart';
+import 'package:cultivo_hidroponico/models/termsacceptance_model.dart';
+import 'package:cultivo_hidroponico/screens/termsacceptance_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -16,19 +19,24 @@ void main() async{
   await initializeDateFormatting('es_ES', null);
   //traer token fcm device
   final token = await FirebaseMessaging.instance.getToken();
+  print('onMessage: $token');
   //escuchar mensajes cuando estas en primer plano
   FirebaseMessaging.onMessage.listen((message) {
     print('onMessage: $message');
     // visualizar la notificacion vista
     
   });
-  runApp(const MyApp());
+  DbTermsAcceptence dbTermsAcceptence = DbTermsAcceptence();
+  TermsAcceptance? termsAcceptance = await dbTermsAcceptence.getTermsAcceptance();
+  
+  runApp(MyApp(termsAcceptance: termsAcceptance,));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {  
+  TermsAcceptance? termsAcceptance;
 
- 
+  MyApp({super.key, this.termsAcceptance});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -38,7 +46,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const NavigationMenu(),
+      home: 
+        termsAcceptance != null && termsAcceptance!.accepted ?
+          const NavigationMenu() :
+        const TermsAcceptanceScreen()
     );
   }
 }

@@ -38,7 +38,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 minimumSize: const Size(2000, 50),
               ),
               child: const Text(
-                'Políticas y privacidad',
+                'Términos y condiciones',
                 style: TextStyle(fontSize: 20 ,color: Colors.white)
               )
             )

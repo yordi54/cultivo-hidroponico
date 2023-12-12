@@ -18,7 +18,7 @@ class _PrivacyTermsScreenState extends State<PrivacyTermsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-          child: Text('Políticas y Privacidad'),
+          child: Text('Términos y condiciones'),
         ),
         backgroundColor: Colors.green,
         elevation: 10,

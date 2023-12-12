@@ -54,6 +54,7 @@ dependencies:
   firebase_messaging: ^14.7.6
   flutter_local_notifications: ^16.2.0
   d_chart: ^2.6.3
+  sqflite: ^2.2.8
 
 
 dev_dependencies:
